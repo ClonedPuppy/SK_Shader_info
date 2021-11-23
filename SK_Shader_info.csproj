@@ -6,7 +6,88 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\ambient.hlsl" />
+    <None Remove="Assets\capsule.hlsl" />
+    <None Remove="Assets\direct.hlsl" />
+    <None Remove="Assets\floor.hlsl" />
+    <None Remove="Assets\LightModelShader.hlsl" />
+    <None Remove="Assets\point.hlsl" />
+    <None Remove="Assets\shader_builtin_default_unlit.hlsl" />
+    <None Remove="Assets\shader_builtin_ui_quadrant_unlit.hlsl" />
+    <None Remove="Assets\spot.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="StereoKit" Version="0.3.5-preview.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\ambient.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\capsule.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\direct.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\floor.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\LightModelShader.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\point.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\shader_builtin_default_unlit.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\shader_builtin_ui_quadrant_unlit.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Assets\spot.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SKShader Include="Assets\ambient.hlsl" />
+    <SKShader Include="Assets\capsule.hlsl" />
+    <SKShader Include="Assets\direct.hlsl" />
+    <SKShader Include="Assets\floor.hlsl" />
+    <SKShader Include="Assets\LightModelShader.hlsl" />
+    <SKShader Include="Assets\point.hlsl" />
+    <SKShader Include="Assets\shader_builtin_default_unlit.hlsl" />
+    <SKShader Include="Assets\shader_builtin_ui_quadrant_unlit.hlsl" />
+    <SKShader Include="Assets\spot.hlsl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\bunny.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\capsuleLight.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\carpet.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\dirLight.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\pointLight.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\spotLight.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
