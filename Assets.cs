@@ -30,7 +30,7 @@ namespace SK_Shader_info
         public static void Load()
         {
             // Textures
-            carpet = Tex.FromFile("carpet.jpg");
+            carpet = Tex.FromFile("redPattern.jpg");
 
             // Materials
             floorMat = new Material(Shader.FromFile("floor.hlsl"));
@@ -59,30 +59,21 @@ namespace SK_Shader_info
             if (type == 1)
             {
                 bunny.Visuals[0].Material = directMat;
-                bunny.Visuals[0].Material[MatParamName.DiffuseTex] = carpet;
-                return directMat;
             }
             else if (type == 2)
             {
                 bunny.Visuals[0].Material = pointMat;
-                bunny.Visuals[0].Material[MatParamName.DiffuseTex] = carpet;
-                return pointMat;
             }
             else if (type == 3)
             {
                 bunny.Visuals[0].Material = spotMat;
-                bunny.Visuals[0].Material[MatParamName.DiffuseTex] = carpet;
-                return spotMat;
             }
             else if (type == 4)
             {
                 bunny.Visuals[0].Material = capsuleMat;
-                bunny.Visuals[0].Material[MatParamName.DiffuseTex] = carpet;
-                return capsuleMat;
             }
-            bunny.Visuals[0].Material = directMat;
             bunny.Visuals[0].Material[MatParamName.DiffuseTex] = carpet;
-            return directMat;
+            return bunny.Visuals[0].Material;
         }
     }
 }

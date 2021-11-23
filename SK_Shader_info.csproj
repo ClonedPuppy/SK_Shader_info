@@ -76,7 +76,7 @@
     <None Update="Assets\capsuleLight.glb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\carpet.jpg">
+    <None Update="Assets\redPattern.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\dirLight.glb">
