@@ -4,11 +4,13 @@ _First, a word of caution. I'm not a rockstar coder, so whatever is written here
 
 ### Some StereoKit syntax & pecularities
 
+StereoKit shaders are based on the HLSL language, you can read up on it more at [Microsofts excellent 
+HLSL documentation](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl).
+
 The entry points for the pixel and fragment shader in StereoKit has to be specifically: 
  
     Pixel shader: vs  
     Fragment shader: ps
-
 
 The way you set defaults for variables in the shader itself, also has a specific syntax:
 
@@ -17,7 +19,6 @@ The way you set defaults for variables in the shader itself, also has a specific
     //--LightColor = 1,1,1  
     //--DirToLight = 1,1,1,0  
     //--specExp = 1
-
 
 StereoKit ships with batteries included. By default, a Spherical Harmonics environment is created which
 provides ambient ligting. You can play around with this in the [StereoKit SkyDemo](https://github.com/maluoi/StereoKit/blob/master/Examples/StereoKitTest/Demos/DemoSky.cs).
@@ -230,6 +231,7 @@ In the main loop we can then fire off values to these by using the .SetVector fu
 To check this out, build the example app in this repo and set the Light Type to Ambient.
 
 
+More comming... Stay tuned!
 
 
 
