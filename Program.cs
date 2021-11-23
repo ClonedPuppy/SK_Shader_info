@@ -82,6 +82,12 @@ namespace SK_Shader_info
                 // UI Stuff
                 UI.WindowBegin("Control", ref ctrlWinPose);
                 UI.Label("Light Type");
+                if (UI.Radio("Ambient", lightTypeButton == 0))
+                {
+                    lightTypeButton = 0;
+                    bunnyMat = Assets.ChangeLightType(0);
+                };
+                UI.SameLine();
                 if (UI.Radio("Direct", lightTypeButton == 1))
                 {
                     lightTypeButton = 1;

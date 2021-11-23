@@ -18,7 +18,7 @@ namespace SK_Shader_info
         public static Model capsuleLightModel;
 
         static Material floorMat;
-        public static Material bunnyMat;
+        public static Material ambientMat;
         public static Material directMat;
         public static Material pointMat;
         public static Material spotMat;
@@ -34,6 +34,7 @@ namespace SK_Shader_info
 
             // Materials
             floorMat = new Material(Shader.FromFile("floor.hlsl"));
+            ambientMat = new Material(Shader.FromFile("ambient.hlsl"));
             directMat = new Material(Shader.FromFile("direct.hlsl"));
             pointMat = new Material(Shader.FromFile("point.hlsl"));
             spotMat = new Material(Shader.FromFile("spot.hlsl"));
@@ -56,6 +57,10 @@ namespace SK_Shader_info
 
         public static Material ChangeLightType(int type)
         {
+            if (type == 0)
+            {
+                bunny.Visuals[0].Material = ambientMat;
+            }
             if (type == 1)
             {
                 bunny.Visuals[0].Material = directMat;

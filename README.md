@@ -126,14 +126,108 @@ Then set the default material_ui_quadrant  shader to this new tweaked version.
 
     Material.Find("default/material_ui_quadrant").Shader = Shader.FromFile("shader_builtin_ui_quadrant_unlit.hlsl");
 
-Done! The StereoKit hands and UI windows can now be seen, even in complete darkness.
+Great. The StereoKit hands and UI windows can now be seen, even in complete darkness.
+Now we are ready to write some shaders!
 
+### A simple ambient light shader
 
+    #include "stereokit.hlsli"
 
+A header we always need to include in StereoKit shaders.
 
+    //--name = app/ambient
 
+    //--tex_scale   = 1
+    //--diffuse     = white
+    //--AmbientUp	= 0,0,0
+    //--AmbientDown = 0,0,0
 
+Some default value declarations.
 
+    float4 AmbientUp;
+    float4 AmbientDown;
+    float tex_scale;
+    Texture2D diffuse : register(t0);
+    SamplerState diffuse_s : register(s0);
+
+Shader vectors from our C# program.
+
+    struct vsIn
+    {
+	    float4 pos : SV_Position;
+	    float3 norm : NORMAL0;
+	    float2 uv : TEXCOORD0;
+    };
+
+Declaration of a struct for the values we want to deal with in the pixel shader.
+
+    struct psIn
+    {
+	    float4 pos : SV_Position;
+	    float2 uv : TEXCOORD0;
+	    float3 norm : TEXCOORD1;
+	    uint view_id : SV_RenderTargetArrayIndex;
+    };
+
+Declaration of a struct for the values we want to deal with in the fragment shader.
+
+    psIn vs(vsIn input, uint id : SV_InstanceID)
+    {
+	    psIn o;
+	    o.view_id = id % sk_view_count;
+	    id = id / sk_view_count;
+
+	    float4 world = mul(input.pos, sk_inst[id].world);
+	    o.pos = mul(world, sk_viewproj[o.view_id]);
+
+	    o.uv = input.uv * tex_scale;
+	    o.norm = normalize(mul(input.norm, (float3x3) sk_inst[id].world));
+	
+	    return o;
+    }
+
+This is the vertex shader, here we create our MVP matrix, set up our UV coordinates and normals.
+
+    // Ambient calculation helper function
+    float3 CalcAmbient(float3 normal, float3 color)
+    {
+	    // Convert from [-1, 1] to [0, 1]
+	    float up = normal.y * 0.5 + 0.5;
+
+	    // Calculate the ambient value
+	    float3 ambient = AmbientDown.rgb + up * AmbientUp.rgb;
+
+	    // Apply the ambient value to the color
+	    return ambient * color;
+    }
+
+A small helper function to calculate the ambient light.
+
+    float4 ps(psIn input) : SV_TARGET
+    {
+	    // Sample the texture and convert to linear space
+	    float3 diffuseColor = diffuse.Sample(diffuse_s, input.uv).rgb;
+
+	    // Calculate the ambient color
+	    float3 AmbientColor = CalcAmbient(input.norm, diffuseColor);
+
+	    // Return the ambient color
+	    return float4(AmbientColor, 1.0);
+    }
+
+And finally, the pixel shader where we calculate the RGB for each pixel on our mesh.
+
+To control the amount of Ambient light from the top or bottom in our program, we utilize 
+the shader vectors we set up in the shader itself.
+
+    float3 AmbientUp;
+    float3 AmbientDown;
+
+In the main loop we can then fire off values to these by using the .SetVector function:
+
+    CustomMaterial.SetVector("AmbientUp", new Vec4(0.2, 0.2, 0.2, 0));
+
+To check this out, build the example app in this repo and set the Light Type to Ambient.
 
 
 

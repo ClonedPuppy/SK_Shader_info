@@ -4,11 +4,11 @@
 
 //--tex_scale   = 1
 //--diffuse     = white
-//--AmbientUp	= 1,1,1
+//--AmbientUp	= 0,0,0
 //--AmbientDown = 0,0,0
 
-float3 AmbientUp;
-float3 AmbientDown;
+float4 AmbientUp;
+float4 AmbientDown;
 float tex_scale;
 Texture2D diffuse : register(t0);
 SamplerState diffuse_s : register(s0);
@@ -49,17 +49,16 @@ float3 CalcAmbient(float3 normal, float3 color)
 	float up = normal.y * 0.5 + 0.5;
 
 	// Calculate the ambient value
-	float3 ambient = AmbientDown + up * AmbientUp;
+	float3 ambient = AmbientDown.rgb + up * AmbientUp.rgb;
 
 	// Apply the ambient value to the color
-	return ambient * color;
+	return ambient.rgb * color;
 }
 
 float4 ps(psIn input) : SV_TARGET
 {
-	    // Sample the texture and convert to linear space
+	 // Sample the texture and convert to linear space
 	float3 diffuseColor = diffuse.Sample(diffuse_s, input.uv).rgb;
-	//diffuseColor *= diffuseColor;
 
 	// Calculate the ambient color
 	float3 AmbientColor = CalcAmbient(input.norm, diffuseColor);
