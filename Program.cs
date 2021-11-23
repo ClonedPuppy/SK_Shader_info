@@ -14,7 +14,7 @@ namespace SK_Shader_info
                 appName = "SK LookDev",
                 assetsFolder = "Assets",
                 logFilter = LogLevel.Info,
-                //displayPreference = DisplayMode.Flatscreen,
+                displayPreference = DisplayMode.Flatscreen,
             }))
                 Environment.Exit(1);
 
@@ -22,6 +22,7 @@ namespace SK_Shader_info
             Light.Initialize();
             UIUnlit.Initialize();
             Assets.Load();
+            Material bunnyMat = Assets.ChangeLightType(1);
 
             // Poses and Variables
             Matrix guardian = Matrix.Identity;
@@ -30,6 +31,9 @@ namespace SK_Shader_info
             Pose pointLightPose = new Pose(0.25f, 0.2f, 0, Quat.LookDir(0, 0, 1));
             Pose spotLightPose = new Pose(0f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
             Pose capsuleLightPose = new Pose(0.3f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
+            int lightTypeButton = 1;
+
+            
 
             // Shader vectors
             var AmbientUp = 0f;
@@ -79,6 +83,41 @@ namespace SK_Shader_info
 
                 // UI Stuff
                 UI.WindowBegin("Control", ref ctrlWinPose);
+                UI.Label("Light Type");
+                if (UI.Radio("Direct", lightTypeButton == 1))
+                {
+                    lightTypeButton = 1;
+                    bunnyMat = Assets.ChangeLightType(1);
+                };
+                
+                UI.SameLine();
+	            if (UI.Radio("Point", lightTypeButton == 2))
+                {
+                    lightTypeButton = 2;
+                    bunnyMat = Assets.ChangeLightType(2);
+                }
+                    
+                UI.SameLine();
+                if (UI.Radio("Spot", lightTypeButton == 3))
+                {
+                    lightTypeButton = 3;
+                    bunnyMat = Assets.ChangeLightType(3);
+                }
+
+                UI.SameLine();
+                if (UI.Radio("Capsule", lightTypeButton == 4))
+                {
+                    lightTypeButton = 4;
+                    bunnyMat = Assets.ChangeLightType(4);
+                }
+
+                //UI.SameLine();
+                //if (UI.Radio("UberShader", lightTypeButton == 5))
+                //{
+                //    lightTypeButton = 5;
+                //    bunnyMat = Assets.ChangeLightType(5);
+                //}
+
                 UI.Label("Ambient Light Top");
                 UI.SameLine();
                 UI.Label("                              Ambient Light Bottom");
@@ -131,22 +170,22 @@ namespace SK_Shader_info
                 Vec3 capsuleLightDirection = capsuleLightPose.orientation * Vec3.Forward;
 
                 // Update shader vectors
-                Assets.bunnyMat.SetVector("AmbientUp", new Vec4(AmbientUp, AmbientUp, AmbientUp, 0));
-                Assets.bunnyMat.SetVector("AmbientDown", new Vec4(AmbientDown, AmbientDown, AmbientDown, 0));
-                Assets.bunnyMat.SetFloat("LightRangeRcp", LightRangeRcp);
-                Assets.bunnyMat.SetColor("LightColor", Color.White);
-                Assets.bunnyMat.SetFloat("specExp", specExp);
-                Assets.bunnyMat.SetFloat("specIntensity", specIntensity);
-                Assets.bunnyMat.SetVector("DirToLight", new Vec4(dirLightRotation, 0));
-                Assets.bunnyMat.SetVector("PointLightPosition", new Vec4(pointLightPosition, 0));
-                Assets.bunnyMat.SetVector("SpotLightPos", new Vec4(spotLightPosition, 0));
-                Assets.bunnyMat.SetVector("SpotDirToLight", new Vec4(spotLightDirection, 0));
-                Assets.bunnyMat.SetFloat("SpotCosOuterCone", SpotCosOuterCone);
-                Assets.bunnyMat.SetFloat("SpotCosInnerConeRcp", SpotCosInnerConeRcp);
-                Assets.bunnyMat.SetVector("CapsuleLightPos", new Vec4(capsuleLightPosition, 0));
-                Assets.bunnyMat.SetVector("CapsuleLightDir", new Vec4(capsuleLightDirection, 0));
-                Assets.bunnyMat.SetFloat("CapsuleLightLen", CapsuleLightLen);
-                Assets.bunnyMat.SetFloat("tex_scale", tex_scale);
+                bunnyMat.SetVector("AmbientUp", new Vec4(AmbientUp, AmbientUp, AmbientUp, 0));
+                bunnyMat.SetVector("AmbientDown", new Vec4(AmbientDown, AmbientDown, AmbientDown, 0));
+                bunnyMat.SetFloat("LightRangeRcp", LightRangeRcp);
+                bunnyMat.SetColor("LightColor", Color.White);
+                bunnyMat.SetFloat("specExp", specExp);
+                bunnyMat.SetFloat("specIntensity", specIntensity);
+                bunnyMat.SetVector("DirToLight", new Vec4(dirLightRotation, 0));
+                bunnyMat.SetVector("PointLightPosition", new Vec4(pointLightPosition, 0));
+                bunnyMat.SetVector("SpotLightPos", new Vec4(spotLightPosition, 0));
+                bunnyMat.SetVector("SpotDirToLight", new Vec4(spotLightDirection, 0));
+                bunnyMat.SetFloat("SpotCosOuterCone", SpotCosOuterCone);
+                bunnyMat.SetFloat("SpotCosInnerConeRcp", SpotCosInnerConeRcp);
+                bunnyMat.SetVector("CapsuleLightPos", new Vec4(capsuleLightPosition, 0));
+                bunnyMat.SetVector("CapsuleLightDir", new Vec4(capsuleLightDirection, 0));
+                bunnyMat.SetFloat("CapsuleLightLen", CapsuleLightLen);
+                bunnyMat.SetFloat("tex_scale", tex_scale);
             })) ;
             SK.Shutdown();
         }

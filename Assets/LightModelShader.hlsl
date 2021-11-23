@@ -1,6 +1,6 @@
 #include "stereokit.hlsli"
 
-//--name = sk/default
+//--name = app/lightModelShader
 
 //--color:color = 252,255,27,1
 //--tex_scale   = 1

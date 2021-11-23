@@ -4,8 +4,11 @@ _First, a word of caution. I'm not a rockstar coder, so whatever is written here
 
 ##### Some StereoKit syntax & pecularities
 
-in / out syntax for pixel and fragment 
-default value syntax
+in / out syntax for pixel and fragment  
+default value syntax  
+Shared buffer  
+SK Default lighting  
+
 
 
 
