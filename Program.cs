@@ -27,13 +27,11 @@ namespace SK_Shader_info
             // Poses and Variables
             Matrix guardian = Matrix.Identity;
             Pose ctrlWinPose = new Pose(-0.5f, 1f, 0f, Quat.LookDir(0, 0, 1));
-            Pose dirLightPose = new Pose(0.2f, 0.2f, 0, Quat.LookDir(0, 0, 1));
-            Pose pointLightPose = new Pose(0.25f, 0.2f, 0, Quat.LookDir(0, 0, 1));
-            Pose spotLightPose = new Pose(0f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
-            Pose capsuleLightPose = new Pose(0.3f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
+            Pose dirLightPose = new Pose(0.15f, 0.2f, 0, Quat.LookDir(0, 0, 1));
+            Pose pointLightPose = new Pose(0.2f, 0.2f, 0, Quat.LookDir(0, 0, 1));
+            Pose spotLightPose = new Pose(0.25f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
+            Pose capsuleLightPose = new Pose(0.3f, 0.2f, 0f, Quat.LookDir(0, 0, -1));
             int lightTypeButton = 1;
-
-            
 
             // Shader vectors
             var AmbientUp = 0f;
@@ -75,7 +73,7 @@ namespace SK_Shader_info
                     guardian = Matrix.T(V.XYZ(0, -1f, 0.5f));
                 }
 
-                // Push the world space forward so I don't have to move 
+                // Push the world space forward a bit
                 Hierarchy.Push(guardian * Matrix.T(V.XYZ(0, 0, -0.4f)));
 
                 Renderer.Add(Assets.floorMesh, Matrix.TR(new Vec3(0, 0, 0), Quat.Identity), Color.White);
@@ -89,63 +87,59 @@ namespace SK_Shader_info
                     lightTypeButton = 1;
                     bunnyMat = Assets.ChangeLightType(1);
                 };
-                
                 UI.SameLine();
 	            if (UI.Radio("Point", lightTypeButton == 2))
                 {
                     lightTypeButton = 2;
                     bunnyMat = Assets.ChangeLightType(2);
                 }
-                    
                 UI.SameLine();
                 if (UI.Radio("Spot", lightTypeButton == 3))
                 {
                     lightTypeButton = 3;
                     bunnyMat = Assets.ChangeLightType(3);
                 }
-
                 UI.SameLine();
                 if (UI.Radio("Capsule", lightTypeButton == 4))
                 {
                     lightTypeButton = 4;
                     bunnyMat = Assets.ChangeLightType(4);
                 }
-
                 //UI.SameLine();
                 //if (UI.Radio("UberShader", lightTypeButton == 5))
                 //{
                 //    lightTypeButton = 5;
                 //    bunnyMat = Assets.ChangeLightType(5);
                 //}
-
-                UI.Label("Ambient Light Top");
+                UI.Label("Ambient Light Top: " + AmbientUp.ToString("n2"));
                 UI.SameLine();
-                UI.Label("                              Ambient Light Bottom");
+                UI.Label("  Ambient Light Bottom: " + AmbientDown.ToString("n2"));
                 UI.HSlider("AmbientUp", ref AmbientUp, 0f, 5f, 0.1f, 0.2f);
                 UI.SameLine();
                 UI.HSlider("AmbientDown", ref AmbientDown, 0f, 5f, 0.1f, 0.2f);
-                UI.Label("Specular Exponent");
+                UI.Label("Specular Exponent: " + specExp.ToString("n2"));
                 UI.SameLine();
-                UI.Label("                              Specular Intensity");
+                UI.Label("  Specular Intensity: " + specIntensity.ToString("n2"));
                 UI.HSlider("specExp", ref specExp, 1f, 255f, 0.01f, 0.2f);
                 UI.SameLine();
                 UI.HSlider("specintense", ref specIntensity, 1f, 50f, 0.01f, 0.2f);
-                UI.Label("Light Range Attenuation");
+                UI.Label("Light Range Attenuation: " + LightRangeRcp.ToString("n2"));
                 UI.SameLine();
-                UI.Label("                              Texture Scale");
+                UI.Label("  Texture Scale: " + tex_scale.ToString("n2"));
                 UI.HSlider("PointLightRangeRcp", ref LightRangeRcp, 0.1f, 10f, 0.01f, 0.2f);
                 UI.SameLine();
                 UI.HSlider("tex_scale", ref tex_scale, 0.1f, 5f, 0.1f, 0.2f);
-                UI.Label("Inner Cone Angle");
+                UI.Label("Inner Cone Angle: " + SpotCosInnerConeRcp.ToString("n2"));
                 UI.SameLine();
-                UI.Label("                              Outer Cone Angle");
+                UI.Label("  Outer Cone Angle: " + SpotCosOuterCone.ToString("n2"));
                 UI.HSlider("InnerCone", ref SpotCosInnerConeRcp, 0f, 100f, 1f, 0.2f);
                 UI.SameLine();
                 UI.HSlider("Outer Cone Angle", ref SpotCosOuterCone, 0f, 5f, 0.1f, 0.2f);
-                UI.Label("Capsule Light Length");
+                UI.Label("Capsule Light Length: " + CapsuleLightLen.ToString("n2"));
                 UI.HSlider("Capsule Length", ref CapsuleLightLen, 0f, 5f, 0.1f, 0.2f);
                 UI.WindowEnd();
 
+                // Set the world space back to default
                 Hierarchy.Pop();
 
                 // Handles
@@ -169,7 +163,7 @@ namespace SK_Shader_info
                 Vec3 capsuleLightPosition = capsuleLightPose.position;
                 Vec3 capsuleLightDirection = capsuleLightPose.orientation * Vec3.Forward;
 
-                // Update shader vectors
+                // Update shader vectors based on UI values
                 bunnyMat.SetVector("AmbientUp", new Vec4(AmbientUp, AmbientUp, AmbientUp, 0));
                 bunnyMat.SetVector("AmbientDown", new Vec4(AmbientDown, AmbientDown, AmbientDown, 0));
                 bunnyMat.SetFloat("LightRangeRcp", LightRangeRcp);

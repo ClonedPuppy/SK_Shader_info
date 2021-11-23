@@ -64,7 +64,6 @@
     <SKShader Include="Assets\floor.hlsl" />
     <SKShader Include="Assets\LightModelShader.hlsl" />
     <SKShader Include="Assets\point.hlsl" />
-    <SKShader Include="Assets\shader_builtin_default_unlit.hlsl" />
     <SKShader Include="Assets\shader_builtin_ui_quadrant_unlit.hlsl" />
     <SKShader Include="Assets\spot.hlsl" />
   </ItemGroup>

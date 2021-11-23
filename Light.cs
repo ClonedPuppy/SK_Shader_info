@@ -77,13 +77,11 @@ namespace SK_Shader_info
             {
                 pose = new Pose(Vec3.Up * 25 * U.cm, Quat.LookDir(-Vec3.Forward)),
                 color = Vec3.Zero
-                //color = V.XYZ(0.53f, 1f, 1f)
             });
             lights.Add(new Light
             {
                 pose = new Pose(-Vec3.Up * 25 * U.cm, Quat.LookDir(-Vec3.Forward)),
                 color = Vec3.Zero
-                //color = V.XYZ(0.37f, 1f, 1f)
             });
 
             SphericalHarmonics lighting = SphericalHarmonics.FromLights(lights
@@ -95,7 +93,6 @@ namespace SK_Shader_info
 
             Renderer.SkyTex = Tex.GenCubemap(lighting);
             Renderer.SkyLight = lighting;
-            //Renderer.EnableSky = false;
 
             matBuffer01.Set(data01);
             matBuffer02.Set(data02);

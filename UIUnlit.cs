@@ -8,11 +8,8 @@ namespace SK_Shader_info
         {
             // make default UI material fully emissive
             Default.MaterialUI.Shader = Shader.Unlit;
-            Default.MaterialUI[MatParamName.DiffuseTex] = Default.Tex;
             Material.Find("default/material_ui_quadrant").Shader = Shader.FromFile("shader_builtin_ui_quadrant_unlit.hlsl");
-            Material.Find("default/material_ui_quadrant")[MatParamName.DiffuseTex] = Default.Tex;
             Default.MaterialHand.Shader = Shader.Unlit;
-            Default.MaterialHand[MatParamName.DiffuseTex] = Default.Tex;
 
             // Hand gradient
             ColorizeFingers(16,
@@ -44,16 +41,6 @@ namespace SK_Shader_info
             tex.SetColors(size, size, pixels);
 
             Default.MaterialHand[MatParamName.DiffuseTex] = tex;
-        }
-
-        public static TextStyle SetFont()
-        {
-            TextStyle style = Text.MakeStyle(
-                Font.FromFile("Assets/Maia.ttf") ?? Default.Font,
-                1f * U.cm,
-                Color.HSV(1f, 0f, 1f));
-
-            return style;
         }
     }
 }
