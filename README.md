@@ -160,7 +160,7 @@ Shader vectors from our C# program.
 	    float2 uv : TEXCOORD0;
     };
 
-Declaration of a struct for the values we want to deal with in the pixel shader.
+Declaration of a struct for the values we want to deal with in the vertex shader.
 
     struct psIn
     {
@@ -216,13 +216,13 @@ A small helper function to calculate the ambient light.
 	    return float4(AmbientColor, 1.0);
     }
 
-And finally, the pixel shader where we calculate the RGB for each pixel on our mesh.
+And finally, the fragment shader where we calculate the RGB for each pixel on our mesh.
 
-To control the amount of Ambient light from the top or bottom in our program, we utilize 
-the shader vectors we set up in the shader itself.
+Now, to control the amount of Ambient light emitted from the top or bottom in the shader from our C# program, we utilize 
+the shader vectors we set up earlier in the shader itself.
 
-    float3 AmbientUp;
-    float3 AmbientDown;
+    float4 AmbientUp;
+    float4 AmbientDown;
 
 In the main loop we can then fire off values to these by using the .SetVector function:
 
@@ -231,7 +231,7 @@ In the main loop we can then fire off values to these by using the .SetVector fu
 To check this out, build the example app in this repo and set the Light Type to Ambient.
 
 
-More comming... Stay tuned!
+More comming... 
 
 
 
