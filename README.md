@@ -1,15 +1,15 @@
 ## A short unofficial primer on how to write shaders for StereoKit!
 
-_First, a word of caution. I'm not a rockstar coder, so whatever is written here inculding the code examples, comes without any guarantees. Proceed at own risk!_
+_First, a word of caution. I'm not a rockstar coder, so whatever is written here including the code examples, comes without any guarantees. Proceed at own risk!_
 
 ### Some StereoKit syntax
 
 StereoKit shaders are based on the HLSL language, you can read up on it more at [Microsofts excellent 
 HLSL documentation](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl).
 
-The entry points for the pixel and fragment shader in StereoKit has to be specifically: 
+The entry points for the vertex and fragment shader in StereoKit has to be specifically: 
  
-    Pixel shader: vs  
+    Vertex shader: vs  
     Fragment shader: ps
 
 The way you set defaults for variables in the shader itself, also has a specific syntax:
@@ -21,17 +21,17 @@ The way you set defaults for variables in the shader itself, also has a specific
     //--specExp = 1
 
 StereoKit ships with batteries included. By default, a Spherical Harmonics environment is created which
-provides ambient ligting. You can play around with this in the [StereoKit SkyDemo](https://github.com/maluoi/StereoKit/blob/master/Examples/StereoKitTest/Demos/DemoSky.cs).
+provides ambient lighting. You can play around with this in the [StereoKit SkyDemo](https://github.com/maluoi/StereoKit/blob/master/Examples/StereoKitTest/Demos/DemoSky.cs).
 
 However, when working with shaders (especially light shaders!), it can sometimes be preferable
 to work in a completely dark environment. That way you can be certain that only your own shader code
 is affecting the materials you build.
 
-So let's do that next!
+Let's do that next!
 
-### Resetting StereoKits default lighting to a pitch black environment.
+### Resetting StereoKits default lighting to a pitch-black environment.
 
-First we set the Spherical Harmonics light itself to emit nothing but black  
+First we set the Spherical Harmonics light itself to emit nothing but black,  
 by adding a light to the top and bottom, both having their RGB set to zero. 
 
     lights.Add(new Light  
@@ -60,19 +60,19 @@ renderer to use that from now on.
 
 The complete code for this is [here](https://github.com/ClonedPuppy/SK_Shader_info/blob/master/Light.cs)
 
-So if you would try and fire this up, you would see nothing but black. StereoKit runs fine, but there's
+If you would try and fire this up, you would see nothing but black. StereoKit runs fine, but there's
 nothing to see. This is because StereoKit applies the Spherical Harmonics lighting to all the default
 "StereoKit" things, such as the hands, the UI windows etc.
 
 So let's fix this. We do the hands first.  
-The hands have a gradient material applied, let's start by overriding that with our own base material:
+The hands have a gradient material applied, let's start by overriding that with another base material:
 
     Default.MaterialHand.Shader = Shader.Unlit;
 
 The above applies a built in StereoKit shader called Shader.Unlit to the hand. It's pretty much as the name implies, 
 a shader that requires no lighting.
-A fully lit hand however is not very aestheticly pleasing, so we can use a gradient to control the 
-transperancy, just like how the hand looks like in StereoKit with it's default lighting.
+A fully lit hand however is not very aesthetically pleasing, so we can use a gradient to control the 
+transparency, just like how the hand looks like in StereoKit with it's default lighting.
 You can use a function from StereoKit source code which steps through all the fingers and sets the gradient values.
 
     private static void ColorizeFingers(int size, Gradient horizontal, Gradient vertical)
@@ -107,20 +107,20 @@ After that, we just need to call the function with our new gradient settings. Fo
                 new GradientKey(new Color(.8f, .8f, .8f, 1), 0.55f),
                 new GradientKey(new Color(0.75f, 0.75f, 0.75f, 0.75f), 0.75f))); 
 
-Ok, hand is done! Now we move on to making the UI materials work in a pitch black environment.
+Ok, hand is done! Now we move on to making the UI materials work in a pitch-black environment.
 
 As before, we set the Default UI material to the unlit shader.
 
     Default.MaterialUI.Shader = Shader.Unlit;
 
 But that's not going to be enough, if you ran the code now with just the unlit shader applied, you would
-see that only a few items such as slider knobs etc were fully visible. The UI windows panel itself is still
-black. This is because StereoKit uses a special shader for it's UI panels, called
+see that only a few items such as slider knobs etc. were fully visible. The UI windows panel itself is still
+black. This is because StereoKit uses a special shader for its UI panels, called
 **shader_builtin_ui_quadrant**. 
 
 So let's fish this shader out of the StereoKit source code and remove the default lighting. The shader is 
 in [_StereoKit/StereoKitC/shaders_builtin/shader_builtin_ui_quadrant.hlsl_](https://github.com/maluoi/StereoKit/blob/master/StereoKitC/shaders_builtin/shader_builtin_ui_quadrant.hlsl).
-Copy the shader file to your own directory, and open it up. Find the line
+Copy the shader file to your own directory and open it up. Find the line
 _o.color.rgb *= Lighting(o.normal);_ and comment it out.  
 
 Then set the default material_ui_quadrant  shader to this new tweaked version.
@@ -231,7 +231,7 @@ In the main loop we can then fire off values to these by using the .SetVector fu
 To check this out, build the example app in this repo and set the Light Type to Ambient.
 
 
-More comming... 
+More coming... 
 
 
 
