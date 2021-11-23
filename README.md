@@ -2,7 +2,7 @@
 
 _First, a word of caution. I'm not a rockstar coder, so whatever is written here inculding the code examples, comes without any guarantees. Proceed at own risk!_
 
-### Some StereoKit syntax & pecularities
+### Some StereoKit syntax
 
 StereoKit shaders are based on the HLSL language, you can read up on it more at [Microsofts excellent 
 HLSL documentation](https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl).
@@ -29,7 +29,7 @@ is affecting the materials you build.
 
 So let's do that next!
 
-### Resetting StereoKit default lighting to a pitch black environment.
+### Resetting StereoKits default lighting to a pitch black environment.
 
 First we set the Spherical Harmonics light itself to emit nothing but black  
 by adding a light to the top and bottom, both having their RGB set to zero. 
