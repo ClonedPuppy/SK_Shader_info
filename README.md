@@ -1,8 +1,8 @@
-### A short unofficial primer on how to write shaders for StereoKit!
+## A short unofficial primer on how to write shaders for StereoKit!
 
 _First, a word of caution. I'm not a rockstar coder, so whatever is written here inculding the code examples, comes without any guarantees. Proceed at own risk!_
 
-##### Some StereoKit syntax & pecularities
+### Some StereoKit syntax & pecularities
 
 The entry points for the pixel and fragment shader in StereoKit has to be specifically: 
  
@@ -10,7 +10,7 @@ The entry points for the pixel and fragment shader in StereoKit has to be specif
     Fragment shader: ps
 
 
-The way you set defaults var variable in the shader itself, also has a specific syntax:
+The way you set defaults for variables in the shader itself, also has a specific syntax:
 
     //--PointLightPosition = 1,1,1,0  
     //--LightRangeRcp = 1  
@@ -23,12 +23,12 @@ StereoKit ships with batteries included. By default, a Spherical Harmonics envir
 provides ambient the ligting. You can play around with this in the [StereoKit SkyDemo](https://github.com/maluoi/StereoKit/blob/master/Examples/StereoKitTest/Demos/DemoSky.cs).
 
 However, when working with shaders (especially light shaders!), it can sometimes be preferable
-to work in a completely dark environment. That way you know can be certain that only your shader code
+to work in a completely dark environment. That way you know you can be certain that only your own shader code
 is affecting the materials you build.
 
 So let's do that next!
 
-##### Resetting StereoKit default lighting to a pitch black environment.
+### Resetting StereoKit default lighting to a pitch black environment.
 
 First we set the Spherical Harmonics light itself to emit nothing but black  
 by adding a light to the top and bottom, both having their RGB set to zero.
