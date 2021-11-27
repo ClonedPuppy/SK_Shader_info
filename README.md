@@ -27,11 +27,9 @@ However, when working with shaders (especially light shaders!), it can sometimes
 to work in a completely dark environment. That way you can be certain that only your own shader code
 is affecting the materials you build.
 
-Let's do that next!
-
 ### Resetting StereoKits default lighting to a pitch-black environment.
 
-First we set the Spherical Harmonics light itself to emit nothing but black,  
+First set the Spherical Harmonics light itself to emit nothing but black,  
 by adding a light to the top and bottom, both having their RGB set to zero. 
 
     lights.Add(new Light  
@@ -45,7 +43,7 @@ by adding a light to the top and bottom, both having their RGB set to zero.
         color = Vec3.Zero  
     });
 
-Once that's done, we build a new lighting solution, generate a CubeMap from it and ask the StereoKit
+Once that's done, build a new lighting solution, generate a CubeMap from it and ask the StereoKit
 renderer to use that from now on.
 
     SphericalHarmonics lighting = SphericalHarmonics.FromLights(lights
@@ -64,7 +62,7 @@ If you would try and fire this up, you would see nothing but black. StereoKit ru
 nothing to see. This is because StereoKit applies the Spherical Harmonics lighting to all the default
 "StereoKit" things, such as the hands, the UI windows etc.
 
-So let's fix this. We do the hands first.  
+Let's fix the hands first.  
 The hands have a gradient material applied, let's start by overriding that with another base material:
 
     Default.MaterialHand.Shader = Shader.Unlit;
@@ -97,7 +95,7 @@ You can use a function from StereoKit source code which steps through all the fi
         Default.MaterialHand[MatParamName.DiffuseTex] = tex;
     }
 
-After that, we just need to call the function with our new gradient settings. For instance:
+After that, it's a matter of just calling the function with our new gradient settings. For instance:
 
     ColorizeFingers(16,
             new Gradient(new GradientKey(new Color(0.75f, 0.75f, 0.75f, 0.75f), 1)),
@@ -107,9 +105,9 @@ After that, we just need to call the function with our new gradient settings. Fo
                 new GradientKey(new Color(.8f, .8f, .8f, 1), 0.55f),
                 new GradientKey(new Color(0.75f, 0.75f, 0.75f, 0.75f), 0.75f))); 
 
-Ok, hand is done! Now we move on to making the UI materials work in a pitch-black environment.
+Ok, we move on to making the UI materials work in a pitch-black environment.
 
-As before, we set the Default UI material to the unlit shader.
+As before, set the Default UI material to the unlit shader.
 
     Default.MaterialUI.Shader = Shader.Unlit;
 
@@ -118,19 +116,19 @@ see that only a few items such as slider knobs etc. were fully visible. The UI w
 black. This is because StereoKit uses a special shader for its UI panels, called
 **shader_builtin_ui_quadrant**. 
 
-So let's fish this shader out of the StereoKit source code and remove the default lighting. The shader is 
+Let's fish this shader out of the StereoKit source code and remove the default lighting. The shader is 
 in [_StereoKit/StereoKitC/shaders_builtin/shader_builtin_ui_quadrant.hlsl_](https://github.com/maluoi/StereoKit/blob/master/StereoKitC/shaders_builtin/shader_builtin_ui_quadrant.hlsl).
 Copy the shader file to your own directory and open it up. Find the line
 _o.color.rgb *= Lighting(o.normal);_ and comment it out.  
 
-Then set the default material_ui_quadrant  shader to this new tweaked version.
+Then set the default material_ui_quadrant  shader to this new tweaked version. I added _unlit_ to the name for clarity.
 
     Material.Find("default/material_ui_quadrant").Shader = Shader.FromFile("shader_builtin_ui_quadrant_unlit.hlsl");
 
-Great. The StereoKit hands and UI windows can now be seen, even in complete darkness.
-Now we are ready to write some shaders!
+The StereoKit hands and UI windows can now be seen, even in complete darkness.
 
-### A simple ambient light shader
+
+### Anatomy of a simple ambient light shader in StereoKit
 
     #include "stereokit.hlsli"
 
@@ -187,7 +185,7 @@ Declaration of a struct for the values we want to deal with in the fragment shad
 	    return o;
     }
 
-This is the vertex shader, here we create our MVP matrix, set up our UV coordinates and normals.
+This is the vertex shader, here we set up our MVP matrix, UV coordinates and normals.
 
     // Ambient calculation helper function
     float3 CalcAmbient(float3 normal, float3 color)
@@ -202,11 +200,11 @@ This is the vertex shader, here we create our MVP matrix, set up our UV coordina
 	    return ambient * color;
     }
 
-A small helper function to calculate the ambient light.
+A small function to calculate the ambient light.
 
     float4 ps(psIn input) : SV_TARGET
     {
-	    // Sample the texture and convert to linear space
+	    // Sample the texture
 	    float3 diffuseColor = diffuse.Sample(diffuse_s, input.uv).rgb;
 
 	    // Calculate the ambient color
@@ -216,7 +214,7 @@ A small helper function to calculate the ambient light.
 	    return float4(AmbientColor, 1.0);
     }
 
-And finally, the fragment shader where we calculate the RGB for each pixel on our mesh.
+And finally, the fragment shader where RGB is calculated for each pixel on the mesh.
 
 Now, to control the amount of Ambient light emitted from the top or bottom in the shader from our C# program, we utilize 
 the shader vectors we set up earlier in the shader itself.
