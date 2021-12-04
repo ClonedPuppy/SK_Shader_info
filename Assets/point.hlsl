@@ -104,7 +104,7 @@ Material PrepareMaterial(float3 normal, float2 UV, float3 eyePos)
 {
 	Material material;
 
-	// Normalize the interpulated vertex normal
+	// Normalize the interpolated vertex normal
 	material.normal = normalize(normal);
 	
 	material.eyePos = eyePos;

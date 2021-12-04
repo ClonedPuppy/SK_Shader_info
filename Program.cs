@@ -1,6 +1,5 @@
 ﻿using StereoKit;
 using System;
-using System.Collections.Generic;
 
 namespace SK_Shader_info
 {
@@ -11,10 +10,10 @@ namespace SK_Shader_info
             // Initialize StereoKit
             if (!SK.Initialize(new SKSettings
             {
-                appName = "SK LookDev",
+                appName = "SK_Shader_Info",
                 assetsFolder = "Assets",
                 logFilter = LogLevel.Info,
-                displayPreference = DisplayMode.Flatscreen,
+                //displayPreference = DisplayMode.Flatscreen,
             }))
                 Environment.Exit(1);
 
@@ -26,11 +25,11 @@ namespace SK_Shader_info
 
             // Poses and Variables
             Matrix guardian = Matrix.Identity;
-            Pose ctrlWinPose = new Pose(-0.5f, 1f, 0f, Quat.LookDir(0, 0, 1));
-            Pose dirLightPose = new Pose(0.15f, 0.2f, 0, Quat.LookDir(0, 0, 1));
-            Pose pointLightPose = new Pose(0.2f, 0.2f, 0, Quat.LookDir(0, 0, 1));
-            Pose spotLightPose = new Pose(0.25f, 0.2f, 0f, Quat.LookDir(0, 0, 1));
-            Pose capsuleLightPose = new Pose(0.3f, 0.2f, 0f, Quat.LookDir(0, 0, -1));
+            Pose ctrlWinPose = new Pose(-0.5f, 0.2f, -0.2f, Quat.LookDir(0, 0, 1));
+            Pose dirLightPose = new Pose(0.15f, 0.2f, -0.2f, Quat.LookDir(0, 0, 1));
+            Pose pointLightPose = new Pose(0.2f, 0.2f, -0.2f, Quat.LookDir(0, 0, 1));
+            Pose spotLightPose = new Pose(0.25f, 0.2f, -0.2f, Quat.LookDir(0, 0, 1));
+            Pose capsuleLightPose = new Pose(0.3f, 0.2f, -0.2f, Quat.LookDir(0, 0, -1));
             int lightTypeButton = 1;
 
             // Shader vectors
@@ -73,11 +72,8 @@ namespace SK_Shader_info
                     guardian = Matrix.T(V.XYZ(0, -1f, 0.5f));
                 }
 
-                // Push the world space forward a bit
-                Hierarchy.Push(guardian * Matrix.T(V.XYZ(0, 0, -0.4f)));
-
-                Renderer.Add(Assets.floorMesh, Matrix.TR(new Vec3(0, 0, 0), Quat.Identity), Color.White);
-                Assets.bunny.Draw(Matrix.TR(V.XYZ(0, 0.6f, 0f), Quat.Identity));
+                Renderer.Add(Assets.floorMesh, Matrix.TR(new Vec3(0, -1.5f, 0), Quat.Identity), Color.White);
+                Assets.bunny.Draw(Matrix.TR(V.XYZ(0, 0f, -0.2f), Quat.Identity));
 
                 // UI Stuff
                 UI.WindowBegin("Control", ref ctrlWinPose);
@@ -144,9 +140,6 @@ namespace SK_Shader_info
                 UI.Label("Capsule Light Length: " + CapsuleLightLen.ToString("n2"));
                 UI.HSlider("Capsule Length", ref CapsuleLightLen, 0f, 5f, 0.1f, 0.2f);
                 UI.WindowEnd();
-
-                // Set the world space back to default
-                Hierarchy.Pop();
 
                 // Handles
                 UI.Handle("dirLight", ref dirLightPose, Assets.dirLightModel.Bounds);
